@@ -1,30 +1,38 @@
+# Время посылки: 9 янв 2024, 21:43:50
+# ID: 104487816
+# Задача: A
+# Компилятор: Python 3.12.1
+# Вердикт: OK
+# Время: 51ms
+# Память: 4.22Mb
 import sys
 
 
-def decoder(comand):
+def decoder(command):
     numbers = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')
-    i = 0
-    result = []
-    coefficient: list = [1]
-    coef = ''
-    while i < len(comand):
-        if comand[i] == '[':
+    i: int = 0
+    result: list = []
+    coefficient: list = [1] # this is steck with coefficients
+    coef: str = ''
+    while i < len(command):
+        if command[i] == '[':
             coefficient.append(int(coef))
             coef = ''
-            str_in_bracket, swipe_i = decoder(comand[i+1:])
+            str_in_bracket, swipe_i = decoder(command[i+1:])
             result.append(coefficient.pop() * str_in_bracket)
             i += swipe_i
-        elif comand[i] == ']':
+        elif command[i] == ']':
             return coefficient.pop() * ''.join(result), i+2
-        elif comand[i] in numbers:
-            coef += comand[i]
+        elif command[i] in numbers:
+            coef += command[i]
             i += 1
         else:
-            result.append(comand[i])
+            result.append(command[i])
             i += 1
 
     return ''.join(result), i
 
+
 if __name__ == "__main__":
-    comand: list = list(sys.stdin.readline().rstrip())
-    print(decoder(comand)[0])
+    command: list = list(sys.stdin.readline().rstrip())
+    print(decoder(command)[0])
