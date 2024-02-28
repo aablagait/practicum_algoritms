@@ -9,30 +9,29 @@ import sys
 
 
 def decoder(command):
-    numbers = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')
     i: int = 0
-    result: list = []
-    coefficient: list = [1] # this is steck with coefficients
+    result: str = ''
+    coefficients: list = [1]  # this is steck with coefficients
     coef: str = ''
     while i < len(command):
         if command[i] == '[':
-            coefficient.append(int(coef))
+            coefficients.append(int(coef))
             coef = ''
-            str_in_bracket, swipe_i = decoder(command[i+1:])
-            result.append(coefficient.pop() * str_in_bracket)
+            str_in_bracket, swipe_i = decoder(command[i + 1:])
+            result += (coefficients.pop() * str_in_bracket)
             i += swipe_i
         elif command[i] == ']':
-            return coefficient.pop() * ''.join(result), i+2
-        elif command[i] in numbers:
+            return coefficients.pop() * result, i + 2
+        elif command[i].isdigit():
             coef += command[i]
             i += 1
         else:
-            result.append(command[i])
+            result += (command[i])
             i += 1
 
-    return ''.join(result), i
+    return result, i
 
 
-if __name__ == "__main__":
-    command: list = list(sys.stdin.readline().rstrip())
-    print(decoder(command)[0])
+if __name__ == '__main__':
+    task: list = list(sys.stdin.readline().rstrip())
+    print(decoder(task)[0])
